@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PORTFOLIO // 3D MONOCHROME ARCHIVE</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 3D Perspective and Card Physics */
+    .tilt-card {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: transform 0.15s ease-out, box-shadow 0.25s ease-out;
+    }
+    .tilt-inner {
+      transform: translateZ(28px);
+    }
+    .hero-parallax-bg {
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: transform;
+    }
+    /* Subtle cursor interaction trail glow */
+    #ambient-light {
+      pointer-events: none;
+      position: fixed;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+    .dark #ambient-light {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 75%);
+    }
+    html:not(.dark) #ambient-light {
+      background: radial-gradient(circle, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 75%);
+    }
+  </style>
+</head>
+
+<body class="bg-neutral-100 text-neutral-900 dark:bg-black dark:text-neutral-100 transition-colors duration-500 font-sans selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
+
+  <!-- Interactive 3D Ambient Cursor Follower -->
+  <div id="ambient-light"></div>
+
+  <!-- FIXED FLOATING NAVIGATION -->
+  <nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 backdrop-blur-md bg-white/70 dark:bg-black/70 border-b border-neutral-200 dark:border-neutral-900 transition-colors">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="#hero" class="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase">
+        <span class="w-3 h-3 bg-black dark:bg-white rounded-sm inline-block"></span>
+        STUDIO ARCHIVE
+      </a>
+      
+      <div class="hidden md:flex gap-8 text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+        <a href="#about" class="hover:text-black dark:hover:text-white transition">About</a>
+        <a href="#workflow" class="hover:text-black dark:hover:text-white transition">Workflow</a>
+        <a href="#works" class="hover:text-black dark:hover:text-white transition">Works (4 Layers)</a>
+        <a href="#intake" class="hover:text-black dark:hover:text-white transition">Work With Me</a>
+      </div>
+
+      <!-- Mode & Status Controller -->
+      <div class="flex items-center gap-3">
+        <span id="time-indicator" class="text-[10px] font-mono text-neutral-500 hidden sm:inline-block">AUTO THEME</span>
+        <button id="theme-toggle" class="px-3 py-1.5 rounded-full border border-neutral-300 dark:border-neutral-800 text-[11px] font-mono hover:bg-neutral-200 dark:hover:bg-neutral-900 transition">
+          🌓 Toggle
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================= SECTION 1: HERO (FIRST SCREEN ONLY) ================= -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-24 z-10">
+    <!-- Hero Parallax Background Grid & Elements -->
+    <div class="hero-parallax-bg absolute inset-0 -z-10 opacity-30 dark:opacity-20 flex items-center justify-center pointer-events-none">
+      <div class="w-[800px] h-[800px] rounded-full border border-neutral-400 dark:border-neutral-700 dashed animate-pulse"></div>
+    </div>
+
+    <div class="max-w-5xl mx-auto text-center space-y-8 tilt-card p-6" data-tilt>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-300 dark:border-neutral-800 text-xs font-mono uppercase tracking-widest text-neutral-500">
+        <span>●</span> VISUAL SYSTEMS ARCHITECT
+      </div>
+
+      <h1 class="text-5xl sm:text-7xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.9]">
+        BOLD FORM.<br />
+        <span class="text-neutral-400 dark:text-neutral-600">ZERO NOISE.</span>
+      </h1>
+
+      <p class="max-w-2xl mx-auto text-base sm:text-xl text-neutral-600 dark:text-neutral-400 font-light leading-relaxed">
+        Engineered visual identities, high-impact social frameworks, and comprehensive publication kits. Built with mathematically rigorous typography and reductive monochrome aesthetics.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4 pt-4">
+        <a href="#works" class="px-8 py-4 bg-black text-white dark:bg-white dark:text-black font-semibold rounded-lg hover:scale-105 transition transform text-xs uppercase tracking-wider">
+          Explore Works (4 Layers)
+        </a>
+        <a href="#intake" class="px-8 py-4 border border-neutral-400 dark:border-neutral-800 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-900 transition text-xs uppercase tracking-wider font-mono">
+          Work With Me ➔
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2: ABOUT ME ================= -->
+  <section id="about" class="py-28 px-6 border-t border-neutral-200 dark:border-neutral-900 max-w-6xl mx-auto z-10 relative">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+      <div class="md:col-span-5 space-y-4">
+        <span class="text-xs font-mono uppercase tracking-widest text-neutral-500">01 // Identity & Scope</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight">About Me & Philosophy</h2>
+      </div>
+
+      <div class="md:col-span-7 space-y-6 text-neutral-600 dark:text-neutral-400 text-base leading-relaxed">
+        <p>
+          I am a multidisciplinary designer dedicated to translating complex organizational challenges into timeless, structured visual languages.
+        </p>
+        <p>
+          Instead of following transient design fads, every artifact is produced using modular scales, systematic hierarchy, and functional contrast. Whether developing a foundational corporate mark, high-volume social content systems, or full publication collateral, precision remains non-negotiable.
+        </p>
+
+        <!-- Specifications & Tooling Badges -->
+        <div class="pt-6 border-t border-neutral-200 dark:border-neutral-900">
+          <span class="text-xs font-mono uppercase tracking-widest text-neutral-500 block mb-3">Core Specifications & Systems:</span>
+          <div class="flex flex-wrap gap-2 text-xs font-mono">
+            <span class="px-3 py-1 rounded bg-neutral-200 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800">Canva Pro Architecture</span>
+            <span class="px-3 py-1 rounded bg-neutral-200 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800">Vector SVG / PDF Print Master</span>
+            <span class="px-3 py-1 rounded bg-neutral-200 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800">4K Motion Renders (MP4)</span>
+            <span class="px-3 py-1 rounded bg-neutral-200 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800">Typography Scale Hierarchies</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3: WORKFLOW ================= -->
+  <section id="workflow" class="py-28 px-6 border-t border-neutral-200 dark:border-neutral-900 bg-neutral-50 dark:bg-neutral-950/40 z-10 relative">
+    <div class="max-w-6xl mx-auto space-y-16">
+      <div class="text-center space-y-3">
+        <span class="text-xs font-mono uppercase tracking-widest text-neutral-500">02 // Methodology</span>
+        <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight">The 4-Stage Execution Flow</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Step 1 -->
+        <div class="tilt-card p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4 shadow-sm" data-tilt>
+          <div class="text-xs font-mono text-neutral-400">01 / STAGE</div>
+          <h3 class="text-lg font-bold">Discovery & Intake</h3>
+          <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            Client requirements, category selections, and reference material are captured via our automated Google Form and logged directly to our tracker sheet.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="tilt-card p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4 shadow-sm" data-tilt>
+          <div class="text-xs font-mono text-neutral-400">02 / STAGE</div>
+          <h3 class="text-lg font-bold">System Geometry</h3>
+          <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            Establishing the underlying grid structure, color balance, and typography pairings across both light and dark display modes.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="tilt-card p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4 shadow-sm" data-tilt>
+          <div class="text-xs font-mono text-neutral-400">03 / STAGE</div>
+          <h3 class="text-lg font-bold">Variation Generation</h3>
+          <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            Building multiple distinct variations across formats: high-res static images, document guides, motion video clips, and print specs.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="tilt-card p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-4 shadow-sm" data-tilt>
+          <div class="text-xs font-mono text-neutral-400">04 / STAGE</div>
+          <h3 class="text-lg font-bold">Canva Cloud Delivery</h3>
+          <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            Assets are packaged with direct, viewable Canva master links for immediate inspection and effortless handover.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4: PORTFOLIO WORKS (4-LAYER HIERARCHY) ================= -->
+  <section id="works" class="py-28 px-6 border-t border-neutral-200 dark:border-neutral-900 max-w-7xl mx-auto z-10 relative space-y-20">
+    <div class="border-b border-neutral-200 dark:border-neutral-800 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-mono uppercase tracking-widest text-neutral-500">03 // Deep Taxonomy Archive</span>
+        <h2 class="text-4xl sm:text-6xl font-black uppercase tracking-tight mt-1">Portfolio Repository</h2>
+      </div>
+      <p class="text-xs font-mono text-neutral-500 max-w-sm">
+        Structured as: Layer 1 (Category) ➔ Layer 2 (Type) ➔ Layer 3 (Variation) ➔ Layer 4 (Design Details + Canva Link).
+      </p>
+    </div>
+
+    <!-- ====== CATEGORY 1: LOGO DESIGN ====== -->
+    <div class="space-y-8">
+      <div class="flex items-center gap-3">
+        <span class="px-3 py-1 rounded bg-black text-white dark:bg-white dark:text-black text-xs font-mono font-bold">LAYER 1: CATEGORY</span>
+        <h3 class="text-2xl font-bold uppercase tracking-tight">Logo Design & Monogram Architecture</h3>
+      </div>
+
+      <!-- TYPE LEVEL -->
+      <div class="pl-4 sm:pl-8 border-l-2 border-neutral-200 dark:border-neutral-800 space-y-8">
+        <div>
+          <span class="text-xs font-mono uppercase text-neutral-400">LAYER 2: TYPE ➔</span>
+          <h4 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200">Geometric & Structural Marks</h4>
+        </div>
+
+        <!-- VARIATIONS 3D GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- VARIATION A (Card with 3D tilt) -->
+          <div class="tilt-card p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-6 shadow-md" data-tilt>
+            <div class="tilt-inner space-y-4">
+              <div class="flex justify-between items-center text-xs font-mono text-neutral-500">
+                <span>LAYER 3: VARIATION A</span>
+                <span class="border border-neutral-300 dark:border-neutral-700 px-2 py-0.5 rounded text-[10px]">DARK EDITION</span>
+              </div>
+
+              <!-- Layer 4: Design Visual Placeholder -->
+              <div class="aspect-[16/9] rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center p-6 text-center">
+                <div class="space-y-2">
+                  <div class="text-4xl font-black tracking-tighter">MIDBLACK</div>
+                  <div class="text-[11px] font-mono text-neutral-400 uppercase tracking-widest">[ IMAGE + VIDEO REEL + PDF SPEC ]</div>
+                </div>
+              </div>
+
+              <!-- Layer 4: Detailed Breakdown -->
+              <div class="space-y-3 pt-2">
+                <h5 class="text-base font-bold">Obsidian Architectural Identity</h5>
+                <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  Engineered with heavy weight-distribution and clean negative-space geometry for high-contrast visibility.
+                </p>
+
+                <!-- Color & Typography Specs -->
+                <div class="grid grid-cols-2 gap-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 text-[11px] font-mono">
+                  <div>
+                    <span class="text-neutral-400 block">PALETTE</span>
+                    <span class="font-bold">#000000 / #1A1A1A / #FFFFFF</span>
+                  </div>
+                  <div>
+                    <span class="text-neutral-400 block">TYPOGRAPHY</span>
+                    <span class="font-bold">Inter Tight Bold / Mono</span>
+                  </div>
+                </div>
+
+                <!-- Viewable Canva Link Button -->
+                <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" 
+                   class="block w-full py-3 mt-4 text-center rounded-lg bg-black text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-85 transition">
+                  🔗 Inspect Live in Canva ↗
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- VARIATION B -->
+          <div class="tilt-card p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-6 shadow-md" data-tilt>
+            <div class="tilt-inner space-y-4">
+              <div class="flex justify-between items-center text-xs font-mono text-neutral-500">
+                <span>LAYER 3: VARIATION B</span>
+                <span class="border border-neutral-300 dark:border-neutral-700 px-2 py-0.5 rounded text-[10px]">LIGHT EDITION</span>
+              </div>
+
+              <div class="aspect-[16/9] rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center p-6 text-center">
+                <div class="space-y-2">
+                  <div class="text-4xl font-black tracking-tighter">ZITANIUM</div>
+                  <div class="text-[11px] font-mono text-neutral-400 uppercase tracking-widest">[ VECTOR SET + EDITORIAL PACKAGING ]</div>
+                </div>
+              </div>
+
+              <div class="space-y-3 pt-2">
+                <h5 class="text-base font-bold">Circular Sustainable Monogram</h5>
+                <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  High-key minimalist mark optimized for embossed print packaging and responsive application headers.
+                </p>
+
+                <div class="grid grid-cols-2 gap-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 text-[11px] font-mono">
+                  <div>
+                    <span class="text-neutral-400 block">PALETTE</span>
+                    <span class="font-bold">#FBFBFB / #6C757D / #000000</span>
+                  </div>
+                  <div>
+                    <span class="text-neutral-400 block">TYPOGRAPHY</span>
+                    <span class="font-bold">Neue Haas Grotesk</span>
+                  </div>
+                </div>
+
+                <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" 
+                   class="block w-full py-3 mt-4 text-center rounded-lg bg-black text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-85 transition">
+                  🔗 Inspect Live in Canva ↗
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== CATEGORY 2: SOCIAL MEDIA POSTS & BANNERS ====== -->
+    <div class="space-y-8 pt-8">
+      <div class="flex items-center gap-3">
+        <span class="px-3 py-1 rounded bg-black text-white dark:bg-white dark:text-black text-xs font-mono font-bold">LAYER 1: CATEGORY</span>
+        <h3 class="text-2xl font-bold uppercase tracking-tight">Social Media Posts & Banner Kits</h3>
+      </div>
+
+      <div class="pl-4 sm:pl-8 border-l-2 border-neutral-200 dark:border-neutral-800 space-y-8">
+        <div>
+          <span class="text-xs font-mono uppercase text-neutral-400">LAYER 2: TYPE ➔</span>
+          <h4 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200">High-Density Educational Carousels</h4>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="tilt-card p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-6 shadow-md" data-tilt>
+            <div class="tilt-inner space-y-4">
+              <div class="flex justify-between items-center text-xs font-mono text-neutral-500">
+                <span>LAYER 3: VARIATION A</span>
+                <span class="border border-neutral-300 dark:border-neutral-700 px-2 py-0.5 rounded text-[10px]">10-SLIDE KIT</span>
+              </div>
+
+              <div class="aspect-[16/9] rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center p-6 text-center">
+                <div class="space-y-2">
+                  <div class="text-3xl font-black tracking-tighter">SYSTEM BLUEPRINT</div>
+                  <div class="text-[11px] font-mono text-neutral-400 uppercase tracking-widest">[ CAROUSEL TEMPLATE + MOTION HOOK ]</div>
+                </div>
+              </div>
+
+              <div class="space-y-3 pt-2">
+                <h5 class="text-base font-bold">Authority Framework Carousel</h5>
+                <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  Curated for LinkedIn and Instagram slide readers, prioritizing dwell time and structured readability.
+                </p>
+
+                <div class="grid grid-cols-2 gap-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 text-[11px] font-mono">
+                  <div>
+                    <span class="text-neutral-400 block">PALETTE</span>
+                    <span class="font-bold">#0D0D0D / #888888 / #FFFFFF</span>
+                  </div>
+                  <div>
+                    <span class="text-neutral-400 block">TYPOGRAPHY</span>
+                    <span class="font-bold">Bebas Neue / Helvetica</span>
+                  </div>
+                </div>
+
+                <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" 
+                   class="block w-full py-3 mt-4 text-center rounded-lg bg-black text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-85 transition">
+                  🔗 Inspect Live in Canva ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5: WORK WITH ME (GOOGLE FORM INTEGRATION) ================= -->
+  <section id="intake" class="py-28 px-6 border-t border-neutral-200 dark:border-neutral-900 bg-neutral-50 dark:bg-neutral-950/40 z-10 relative">
+    <div class="max-w-4xl mx-auto text-center space-y-8">
+      <div class="space-y-3">
+        <span class="text-xs font-mono uppercase tracking-widest text-neutral-500">04 // Project Initiation</span>
+        <h2 class="text-4xl sm:text-6xl font-black uppercase tracking-tight">Work With Me</h2>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 max-w-lg mx-auto">
+          Submit your design specifications, layer requirements, and asset briefs below. Submissions sync directly to my Google Sheet for an immediate project audit.
+        </p>
+      </div>
+
+      <!-- 3D Form Trigger Card -->
+      <div class="tilt-card p-8 sm:p-12 rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 shadow-xl space-y-6" data-tilt>
+        <div class="tilt-inner space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-xs font-mono text-neutral-600 dark:text-neutral-300">
+            <span>⚡</span> DIRECT GOOGLE FORM & SHEETS INTEGRATION
+          </div>
+
+          <h3 class="text-2xl font-bold">Project Registration & Scope Submission</h3>
+          <p class="text-xs text-neutral-500 font-mono">
+            Fill in your email, select your 4-layer design scope, and attach your reference assets.
+          </p>
+
+          <div class="pt-4">
+            <!-- Replace URL with your actual Google Form URL -->
+            <a href="https://forms.google.com" target="_blank" rel="noopener noreferrer" 
+               class="inline-block w-full sm:w-auto px-10 py-5 rounded-xl bg-black text-white dark:bg-white dark:text-black font-extrabold text-xs uppercase tracking-widest hover:scale-105 transition transform shadow-2xl">
+              Click Here to Open Project Intake Form ➔
+            </a>
+          </div>
+
+          <div class="text-[11px] text-neutral-400 font-mono pt-4 border-t border-neutral-200 dark:border-neutral-800 flex flex-wrap justify-center gap-6">
+            <span>✓ Automatically Logged to Google Sheet</span>
+            <span>✓ Direct Notification Alert</span>
+            <span>✓ 24-Hour Scope Audit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6: SOCIAL MEDIA PLATFORMS ================= -->
+  <footer id="social" class="py-24 px-6 border-t border-neutral-200 dark:border-neutral-900 z-10 relative">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+      <div class="space-y-3 max-w-md">
+        <h3 class="text-2xl font-black uppercase tracking-tight">FOLLOW & COMMENT FOR WORK</h3>
+        <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          I post daily design variations, typography experiments, and Canva breakdowns. Comment on any recent post or direct message me to collaborate on your next project.
+        </p>
+      </div>
+
+      <!-- Social Media Platform Badges -->
+      <div class="flex flex-wrap gap-3 font-mono text-xs">
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-lg border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white transition">
+          INSTAGRAM ↗
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-lg border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white transition">
+          LINKEDIN ↗
+        </a>
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-lg border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white transition">
+          X (TWITTER) ↗
+        </a>
+        <a href="https://behance.net" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-lg border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white transition">
+          BEHANCE ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto pt-16 mt-16 border-t border-neutral-200 dark:border-neutral-900 flex flex-col sm:flex-row justify-between items-center text-[10px] font-mono text-neutral-400 gap-4">
+      <div>© 2026 DESIGN SYSTEMS ARCHIVE. ALL RIGHTS RESERVED.</div>
+      <div>PURE MONOCHROME • 3D PHYSICS • CANVA INTEGRATED</div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT: AUTO DAY/NIGHT & 3D PARALLAX ================= -->
+  <script>
+    // 1. AUTOMATIC TIME-BASED LIGHT / DARK MODE (Day = 6am-6pm Light, Night = Dark)
+    const htmlElement = document.documentElement;
+    const timeIndicator = document.getElementById('time-indicator');
+    const toggleBtn = document.getElementById('theme-toggle');
+
+    function applyAutomaticTheme() {
+      const currentHour = new Date().getHours();
+      const isDaytime = currentHour >= 6 && currentHour < 18;
+
+      if (!localStorage.getItem('theme_override')) {
+        if (isDaytime) {
+          htmlElement.classList.remove('dark');
+          timeIndicator.textContent = "DAY MODE (6AM-6PM)";
+        } else {
+          htmlElement.classList.add('dark');
+          timeIndicator.textContent = "NIGHT MODE (6PM-6AM)";
+        }
+      } else {
+        const savedTheme = localStorage.getItem('theme_override');
+        if (savedTheme === 'dark') htmlElement.classList.add('dark');
+        else htmlElement.classList.remove('dark');
+        timeIndicator.textContent = "MANUAL: " + savedTheme.toUpperCase();
+      }
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const isDark = htmlElement.classList.toggle('dark');
+      localStorage.setItem('theme_override', isDark ? 'dark' : 'light');
+      timeIndicator.textContent = "MANUAL: " + (isDark ? "DARK" : "LIGHT");
+    });
+
+    applyAutomaticTheme();
+
+    // 2. 3D MOUSE MOVEMENT PHYSICS (PARALLAX & CARD TILT)
+    const ambientLight = document.getElementById('ambient-light');
+    const heroParallaxBg = document.querySelector('.hero-parallax-bg');
+    const tiltCards = document.querySelectorAll('[data-tilt]');
+
+    window.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      // Ambient cursor follower
+      ambientLight.style.left = `${mouseX}px`;
+      ambientLight.style.top = `${mouseY}px`;
+
+      // Hero background subtle parallax shift
+      if (heroParallaxBg) {
+        const moveX = (mouseX - window.innerWidth / 2) * -0.04;
+        const moveY = (mouseY - window.innerHeight / 2) * -0.04;
+        heroParallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      }
+
+      // Interactive 3D Card Tilt
+      tiltCards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        const isHovered = (
+          mouseX >= rect.left &&
+          mouseX <= rect.right &&
+          mouseY >= rect.top &&
+          mouseY <= rect.bottom
+        );
+
+        if (isHovered) {
+          const cardX = mouseX - rect.left - rect.width / 2;
+          const cardY = mouseY - rect.top - rect.height / 2;
+          const rotateX = -(cardY / (rect.height / 2)) * 10;
+          const rotateY = (cardX / (rect.width / 2)) * 10;
+          card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        } else {
+          card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
